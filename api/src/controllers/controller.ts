@@ -18,10 +18,9 @@ const splitTable = (table: string[]) => {
 
   for (let i = 0; i < table.length; i++) {
     const word = table[i];
-
     count += word.length;
     if (count > 80) {
-      splitedTab.push(ret);
+      splitedTab.push(ret.substring(0, ret.length - 1));
       ret = '';
       count = word.length;
     }
@@ -42,20 +41,20 @@ const getJustifiedTextString = (table: string[]) => {
     if (index !== 0) justifiedText += '\n';
     let missingChar: number = 80 - line.length;
     const words: string[] = line.split(/(\s+)/);
-    let middle: number = words.length / 2;
-    let i = 1;
-
+    let middle: number = Math.floor(words.length / 2);
+    let i = 0;
+    console.log(`Line (${line.length}) [` + line + ']');
     while (missingChar > 0 && words.length > 1) {
-      middle = words.length / 2;
-      if (middle + i < words.length) {
-        words.splice(middle + i, 0, ' ');
-        missingChar--;
-      }
-      if (missingChar > 0 && middle - i >= 0) {
-        words.splice(middle - i, 0, ' ');
-        missingChar--;
-        i += 3;
-      }
+      //   if (middle + i < words.length) {
+      //   console.log(middle + i);
+      words[middle + i] += ' ';
+      missingChar--;
+      //   }
+      //   if (middle - i > 0) {
+      //     words[i] += ' ';
+      //     missingChar--;
+      //   }
+      i += 2;
     }
     const string: string = words.join('');
     justifiedText += string;
@@ -68,7 +67,7 @@ const getTextJustify = (text: string) => {
   const spaceSplitedTab: string[] = text.split(' ');
   let splitedTab: string[] = splitTable(spaceSplitedTab);
 
-  //   for (let line of splitedTab) {
+  //   for (let line of spaceSplitedTab) {
   //     const length: number = line.length;
   //     console.log(`Line (${length}) = ` + line);
   //   }
