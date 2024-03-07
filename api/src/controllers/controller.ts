@@ -11,13 +11,37 @@ export const defaultHandler = (req: Request, res: Response) => {
   res.end();
 };
 
+//ca fait 80 caracteres, il y a des espaces et des mots, cela ne fait qu'une ligne
 const getTextJustify = (text: string) => {
   if (text.length <= 80) return text;
+  const tab: string[] = text.split(' ');
+  let tab2: string[] = [];
+  let ret: string = '';
+
+  let count: number = 0;
+  for (let i = 0; i < tab.length; i++) {
+    const word = tab[i];
+    count += word.length;
+    if (count > 80) {
+      tab2.push(ret);
+      ret = '';
+      count = word.length;
+    }
+    ret += word + ' ';
+    count++;
+
+    if (i === tab.length - 1) {
+      tab2.push((ret += word));
+    }
+  }
+  for (let index of tab2) {
+    console.log(`tab [] = ` + index);
+  }
+  return ret;
 };
 
 export const postTextJustifyHandler = (req: Request, res: Response) => {
-  console.log('The request body :', req.body);
-  console.log('Content-Type :', req.headers['content-type']);
+  //   console.log('The request body \n[' + req.body + ']');
   // check headers authorizartion bearer !null
   // check token match
   // check body content-type && !null
