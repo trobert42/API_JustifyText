@@ -97,19 +97,28 @@ export const postTextJustifyHandler = (req: Request, res: Response) => {
   res.send(justifiedText);
 };
 
+const User = require('../models/user');
+
+export const createUser = async (req: Request, res: Response) => {
+  const { email, token } = req.body;
+  try {
+    const newUser = await User.createUser(email, token);
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res
+      .status(500)
+      .json({ error: 'An error occurred while creating the user' });
+  }
+};
+
 export const postTokenHandler = (req: Request, res: Response) => {
   const email = req.body['email'];
+  console.log('The request body: ', req.body);
   if (!req.body || !email) {
     res.status(400);
     throw new Error('No email');
   }
+  createUser(req, res);
   res.statusCode = 200;
-  console.log('The request body: ', req.body);
-  res.setHeader('Content-Type', 'application/json');
-  res.write(
-    JSON.stringify({
-      message: `POST successful`,
-    }),
-  );
-  res.end();
 };

@@ -2,7 +2,7 @@ import express, { Response, Request } from 'express';
 
 const app = express();
 const pool = require('./db/db');
-const hostname = process.env.HOSTNAME || 'localhost';
+const hostname = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT ?? '3000');
 const routes = require('./routes/routes.ts');
 
