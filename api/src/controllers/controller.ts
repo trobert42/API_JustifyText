@@ -11,8 +11,13 @@ export const defaultHandler = (req: Request, res: Response) => {
   res.end();
 };
 
+const getTextJustify = (text: string) => {
+  if (text.length <= 80) return text;
+};
+
 export const postTextJustifyHandler = (req: Request, res: Response) => {
   console.log('The request body :', req.body);
+  console.log('Content-Type :', req.headers['content-type']);
   // check headers authorizartion bearer !null
   // check token match
   // check body content-type && !null
@@ -24,17 +29,13 @@ export const postTextJustifyHandler = (req: Request, res: Response) => {
     res.status(400);
     throw new Error('Body is empty');
   }
+  const justifiedText = getTextJustify(req.body);
   // check rate limit -> 402
 
   // add words/day in db
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.write(
-    JSON.stringify({
-      message: `POST successful`,
-    }),
-  );
-  res.end();
+  res.send(justifiedText);
 };
 
 export const postTokenHandler = (req: Request, res: Response) => {
