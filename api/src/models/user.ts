@@ -1,5 +1,4 @@
 import pool from '../db/db';
-
 class User {
   static async createUser(email: string, token: string) {
     const query =
@@ -24,7 +23,7 @@ class User {
     const values = [email];
     const result = await pool.query(query, values);
     if (result.rows.length === 0) {
-      throw new Error('User not found');
+      return null;
     }
     return result.rows[0].words_count;
   }
@@ -33,6 +32,18 @@ class User {
     const query = 'UPDATE users SET words_count = $1 WHERE email = $2';
     const values = [newWordsCount, email];
     await pool.query(query, values);
+  }
+
+  static async updateAllUserWordsCount(newWordsCount: number) {
+    const query = 'UPDATE users SET words_count = $1';
+    const values = [newWordsCount];
+    await pool.query(query, values);
+  }
+
+  static async getAllUsers() {
+    const query = 'SELECT id, email, words_count FROM users';
+    const result = await pool.query(query);
+    return result.rows;
   }
 }
 

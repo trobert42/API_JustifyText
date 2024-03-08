@@ -110,7 +110,7 @@ export const postTextJustifyHandler = async (
         (80000 - nbrActualWords),
     });
   }
-  updateUserWordsCount(req, res, nbrWordsToAdd, nbrActualWords);
+  await updateUserWordsCount(req, res, nbrWordsToAdd, nbrActualWords);
   console.log('Successfully justified text from post request!');
   res
     .status(200)
@@ -132,4 +132,8 @@ export const postTokenHandler = (req: Request, res: Response) => {
     return res.status(500).json({ error: `Unable to retrieve token` });
   }
   createUser(req, res, token);
+};
+
+export const setToZeroWordsCount = async () => {
+  await User.updateAllUserWordsCount(0);
 };

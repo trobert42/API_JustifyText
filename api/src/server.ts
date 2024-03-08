@@ -3,6 +3,8 @@ export interface HttpError extends Error {
   statusCode?: number;
 }
 
+require('./cron');
+
 const app = express();
 const hostname = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT ?? '3000');
