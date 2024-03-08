@@ -29,6 +29,7 @@ pool.connect((err: Error, client: typeof PoolClient, release: () => void) => {
         return console.error('Error executing query', err.stack);
       }
       console.log('Table "users" created successfully');
+      console.log('-------------------------------------------');
     },
   );
 });

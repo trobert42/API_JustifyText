@@ -27,4 +27,3 @@ module.exports = (
     res.status(401).json({ error: `Wrong Token, no token or user not found` });
   }
 };
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvd2R0QHRhdGEuY29tIiwiaWF0IjoxNzA5OTExNTk0fQ.6HqlgFTTEM1c4X6zP2DxmX-ibXPbedtk64sgLwP6nTU
