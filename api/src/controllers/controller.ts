@@ -4,6 +4,7 @@ import { createUser, updateUserWordsCount } from './userController';
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
+const max_length_text = 80;
 export interface AuthenticatedRequest extends Request {
   auth?: string;
 }
@@ -12,27 +13,39 @@ export const defaultHandler = (req: Request, res: Response) => {
   return res.status(200).json({ error: `API not found at ${req.url}` });
 };
 
-const splitTable = (table: string[]) => {
-  let splitedTab: string[] = [];
-  let ret: string = '';
-  let count: number = 0;
+const arrangeLineByLength = (oldTable: string[]) => {
+  let wordsTab: string[] = [];
+  let newTab: string[] = [];
+  console.log('oldTable length = ' + oldTable.length);
 
-  for (let i = 0; i < table.length; i++) {
-    const word = table[i];
-    count += word.length;
-    if (count > 80) {
-      splitedTab.push(ret.substring(0, ret.length - 1));
-      ret = '';
-      count = word.length;
+  for (let j = 0; j < oldTable.length; j++) {
+    wordsTab = oldTable[j].split(' ');
+    console.log('wordsTab length = ' + oldTable[j].length);
+    let ret: string = '';
+    let word: string = '';
+    let count: number = 0;
+    for (let i = 0; i < wordsTab.length; i++) {
+      word = wordsTab[i];
+      count += word.length;
+      if (count > max_length_text) {
+        newTab.push(ret.substring(0, ret.length - 1));
+        ret = '';
+        count = word.length;
+      }
+      if (i === wordsTab.length - 1) {
+        newTab.push((ret += word));
+      }
+      ret += word + ' ';
+      count++;
     }
-    if (i === table.length - 1) {
-      splitedTab.push((ret += word));
-      break;
-    }
-    ret += word + ' ';
-    count++;
   }
-  return splitedTab;
+
+  newTab.forEach((element) => {
+    console.log('Lines after rearranging -- [' + element + ']');
+  });
+  console.log('------------');
+
+  return newTab;
 };
 
 const getJustifiedTextString = (table: string[]) => {
@@ -40,40 +53,40 @@ const getJustifiedTextString = (table: string[]) => {
 
   table.forEach((line, index) => {
     if (index !== 0) justifiedText += '\n';
-    let missingChar: number = 80 - line.length;
+    let missingChar: number = max_length_text - line.length;
     const words: string[] = line.split(/(\s+)/);
-    let middle: number = Math.floor(words.length / 2);
+    const length = words.length;
+    let oneQuarter: number = Math.floor(length / 4);
     let i = 0;
-    console.log(`Line (${line.length}) [` + line + ']');
-    while (missingChar > 0 && words.length > 1) {
-      //   if (middle + i < words.length) {
-      //   console.log(middle + i);
-      words[middle + i] += ' ';
+    console.log(
+      `Line (${line.length}) missing : ${missingChar} [` + line + ']',
+    );
+    while (missingChar > 0 && length > 1) {
+      if (
+        oneQuarter + i === Math.floor((length * 3) / 4) ||
+        oneQuarter + i === length - 1
+      )
+        i = 0;
+      words[oneQuarter + i] += ' ';
       missingChar--;
-      //   }
-      //   if (middle - i > 0) {
-      //     words[i] += ' ';
-      //     missingChar--;
-      //   }
       i += 2;
     }
     const string: string = words.join('');
+    console.log(`New line = [${string}]`);
     justifiedText += string;
   });
   return justifiedText;
 };
 
 const getTextJustify = (text: string) => {
-  if (text.length <= 80) return text;
-  const spaceSplitedTab: string[] = text.split(' ');
-  let splitedTab: string[] = splitTable(spaceSplitedTab);
-
-  //   for (let line of spaceSplitedTab) {
-  //     const length: number = line.length;
-  //     console.log(`Line (${length}) = ` + line);
-  //   }
-
-  return getJustifiedTextString(splitedTab);
+  if (text.length <= max_length_text) return text;
+  const lineSplitedTab: string[] = text.split('\n');
+  //   const spaceSplitedTab: string[] = text.split(/(?<=\n)|(?=\n)| /);
+  lineSplitedTab.forEach((element) => {
+    console.log('Lines before -- [' + element + ']');
+  });
+  console.log('------------');
+  return getJustifiedTextString(arrangeLineByLength(lineSplitedTab));
 };
 
 const countWords = (line: string) => {
