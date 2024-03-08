@@ -4,7 +4,7 @@ const cron = require('node-cron');
 const User = require('../models/user');
 
 cron.schedule(
-  '*/5 * * * *',
+  '0 0 * * *',
   async () => {
     const users = await User.getAllUsers();
     console.log('Before');
