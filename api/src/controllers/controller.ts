@@ -1,14 +1,10 @@
 import { Request, Response } from 'express';
+import { createUser, updateUserWordsCount } from './userController';
+
+const User = require('../models/user');
 
 export const defaultHandler = (req: Request, res: Response) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.write(
-    JSON.stringify({
-      message: `API not found at ${req.url}`,
-    }),
-  );
-  res.end();
+  return res.status(200).json({ error: `API not found at ${req.url}` });
 };
 
 const splitTable = (table: string[]) => {
@@ -75,50 +71,44 @@ const getTextJustify = (text: string) => {
   return getJustifiedTextString(splitedTab);
 };
 
-export const postTextJustifyHandler = (req: Request, res: Response) => {
-  //   console.log('The request body \n[' + req.body + ']');
-  // check headers authorizartion bearer !null
-  // check token match
-  // check body content-type && !null
-  if (!req.is('text/plain')) {
-    res.status(400);
-    throw new Error('Content-Type wrong format');
-  }
-  if (!req.body) {
-    res.status(400);
-    throw new Error('Body is empty');
-  }
-  const justifiedText = getTextJustify(req.body);
-  // check rate limit -> 402
-  // add words/day in db
-
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(justifiedText);
+const countWords = (line: string) => {
+  const tab: string[] = line.split(' ');
+  return tab.length;
 };
 
-const User = require('../models/user');
-
-export const createUser = async (req: Request, res: Response) => {
-  const { email, token } = req.body;
-  try {
-    const newUser = await User.createUser(email, token);
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res
-      .status(500)
-      .json({ error: 'An error occurred while creating the user' });
+export const postTextJustifyHandler = async (req: Request, res: Response) => {
+  //   const token = req.headers['authorization'];
+  //   if (!token) {
+  //     return res.status(401).json({ error: 'Unauthorized' });
+  //   }
+  // check token match
+  if (!req.is('text/plain')) {
+    return res.status(400).json({ error: `Content-Type wrong format` });
   }
+  if (!req.body) {
+    return res.status(400).json({ error: `Empty body` });
+  }
+  const justifiedText = getTextJustify(req.body);
+  const nbrWordsToAdd: number = countWords(justifiedText);
+  const nbrActualWords: number = await User.getUserWordsCount('toto@tata.com');
+
+  if (nbrWordsToAdd + nbrActualWords > 80000) {
+    return res.status(402).json({
+      error:
+        `Exceeds rate limit, number left of words authorized: ` +
+        (80000 - nbrActualWords),
+    });
+  }
+  updateUserWordsCount(req, res, nbrWordsToAdd, nbrActualWords);
+  res.status(200).setHeader('Content-Type', 'text/plain').send(justifiedText);
 };
 
 export const postTokenHandler = (req: Request, res: Response) => {
   const email = req.body['email'];
-  console.log('The request body: ', req.body);
   if (!req.body || !email) {
-    res.status(400);
-    throw new Error('No email');
+    return res
+      .status(400)
+      .json({ error: `Bad request, missing body or email` });
   }
   createUser(req, res);
-  res.statusCode = 200;
 };

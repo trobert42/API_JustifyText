@@ -19,7 +19,8 @@ pool.connect((err: Error, client: typeof PoolClient, release: () => void) => {
 	  CREATE TABLE IF NOT EXISTS users (
 		  id SERIAL PRIMARY KEY,
 		  email VARCHAR(255) NOT NULL,
-		  token VARCHAR(255) NOT NULL
+		  token VARCHAR(255) NOT NULL,
+		  words_count INT DEFAULT 0
 	  )
   `,
     (err: Error, result: pg.QueryResult<any>) => {
