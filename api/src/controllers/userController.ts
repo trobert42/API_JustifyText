@@ -2,8 +2,12 @@ import { Request, Response } from 'express';
 
 const User = require('../models/user');
 
-export const createUser = async (req: Request, res: Response) => {
-  const { email, token } = req.body;
+export const createUser = async (
+  req: Request,
+  res: Response,
+  token: string,
+) => {
+  const { email } = req.body;
   try {
     const existingUser = await User.getUserFromEmail(email);
     if (existingUser) {

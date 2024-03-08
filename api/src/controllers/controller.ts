@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { createUser, updateUserWordsCount } from './userController';
 
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 export const defaultHandler = (req: Request, res: Response) => {
   return res.status(200).json({ error: `API not found at ${req.url}` });
@@ -103,6 +104,14 @@ export const postTextJustifyHandler = async (req: Request, res: Response) => {
   res.status(200).setHeader('Content-Type', 'text/plain').send(justifiedText);
 };
 
+const generateToken = (email: string) => {
+  const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {
+    expiresIn: '',
+  });
+  console.log(token);
+  return token;
+};
+
 export const postTokenHandler = (req: Request, res: Response) => {
   const email = req.body['email'];
   if (!req.body || !email) {
@@ -110,5 +119,7 @@ export const postTokenHandler = (req: Request, res: Response) => {
       .status(400)
       .json({ error: `Bad request, missing body or email` });
   }
-  createUser(req, res);
+  const token = generateToken(email);
+  createUser(req, res, token);
+  return res.status(200).json({ token: `${token}` });
 };
