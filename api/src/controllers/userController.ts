@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 
 const User = require('../models/user');
+export interface AuthenticatedRequest extends Request {
+  auth?: string;
+}
 
 export const createUser = async (
   req: Request,
@@ -16,22 +19,20 @@ export const createUser = async (
         .json({ error: `Credentials [${existingUser}] taken` });
     }
     const newUser = await User.createUser(email, token);
-    console.log(`User [${email}] created !`);
-    res.status(201).json(newUser);
+    return res.status(200).json({ token: `${token}` });
   } catch (error) {
-    res
+    return res
       .status(500)
       .json({ error: 'An error occurred while creating the user' });
   }
 };
 
-export const getWordsCountFromUser = async (req: Request, res: Response) => {
+export const getWordsCountFromUser = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
   try {
-    const email = 'toto@tata.com'; // to change, double check ?
-    if (!email) {
-      return res.status(400).json({ error: `User ${email} not found` });
-    }
-    const words: number = await User.getWords(email);
+    const words: number = await User.getWords(req.auth);
   } catch (error) {
     res
       .status(500)
@@ -40,19 +41,17 @@ export const getWordsCountFromUser = async (req: Request, res: Response) => {
 };
 
 export const updateUserWordsCount = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   nbrWordsToAdd: number,
   nbrActualWords: number,
 ) => {
   try {
-    const email = 'toto@tata.com'; // to change, double check ?
-    if (!email) {
-      return res.status(400).json({ error: `User ${email} not found` });
-    }
-    await User.updateUserWordsCount(email, nbrActualWords + nbrWordsToAdd);
+    await User.updateWordsCount(req.auth, nbrActualWords + nbrWordsToAdd);
     console.log(
-      'Updating count of words : ' + (nbrActualWords + nbrWordsToAdd),
+      `Updating count of words from user [${req.auth}]: ` +
+        (nbrActualWords + nbrWordsToAdd) +
+        '/80,000',
     );
   } catch (error) {
     res

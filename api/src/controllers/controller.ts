@@ -4,6 +4,10 @@ import { createUser, updateUserWordsCount } from './userController';
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
+export interface AuthenticatedRequest extends Request {
+  auth?: string;
+}
+
 export const defaultHandler = (req: Request, res: Response) => {
   return res.status(200).json({ error: `API not found at ${req.url}` });
 };
@@ -77,12 +81,10 @@ const countWords = (line: string) => {
   return tab.length;
 };
 
-export const postTextJustifyHandler = async (req: Request, res: Response) => {
-  //   const token = req.headers['authorization'];
-  //   if (!token) {
-  //     return res.status(401).json({ error: 'Unauthorized' });
-  //   }
-  // check token match
+export const postTextJustifyHandler = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
   if (!req.is('text/plain')) {
     return res.status(400).json({ error: `Content-Type wrong format` });
   }
@@ -91,7 +93,7 @@ export const postTextJustifyHandler = async (req: Request, res: Response) => {
   }
   const justifiedText = getTextJustify(req.body);
   const nbrWordsToAdd: number = countWords(justifiedText);
-  const nbrActualWords: number = await User.getUserWordsCount('toto@tata.com');
+  const nbrActualWords: number = await User.getWordsCount(req.auth);
 
   if (nbrWordsToAdd + nbrActualWords > 80000) {
     return res.status(402).json({
@@ -101,7 +103,10 @@ export const postTextJustifyHandler = async (req: Request, res: Response) => {
     });
   }
   updateUserWordsCount(req, res, nbrWordsToAdd, nbrActualWords);
-  res.status(200).setHeader('Content-Type', 'text/plain').send(justifiedText);
+  res
+    .status(200)
+    .setHeader('Content-Type', 'text/plain')
+    .send(justifiedText.toString());
 };
 
 const generateToken = (email: string) => {
@@ -121,5 +126,4 @@ export const postTokenHandler = (req: Request, res: Response) => {
     return res.status(500).json({ error: `Unable to retrieve token` });
   }
   createUser(req, res, token);
-  return res.status(200).json({ token: `${token}` });
 };

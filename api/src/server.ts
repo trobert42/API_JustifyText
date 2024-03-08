@@ -1,7 +1,7 @@
 import express, { Response, Request } from 'express';
+import { HttpError } from './interfaces';
 
 const app = express();
-const pool = require('./db/db');
 const hostname = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT ?? '3000');
 const routes = require('./routes/routes.ts');
@@ -14,6 +14,10 @@ app.use((req: Request, res: Response, next) => {
   } else {
     next();
   }
+});
+
+app.use((err: HttpError, req: Request, res: Response, next: () => void) => {
+  res.status(err.statusCode || 500).json({ error: err.message });
 });
 
 app.use('/', routes);

@@ -20,7 +20,7 @@ class User {
     return result.rows[0].email;
   }
 
-  static async getUserWordsCount(email: string) {
+  static async getWordsCount(email: string) {
     const query = 'SELECT words_count FROM users WHERE email = $1';
     const values = [email];
     const result = await pool.query(query, values);
@@ -30,7 +30,7 @@ class User {
     return result.rows[0].words_count;
   }
 
-  static async updateUserWordsCount(email: string, newWordsCount: number) {
+  static async updateWordsCount(email: string, newWordsCount: number) {
     const query = 'UPDATE users SET words_count = $1 WHERE email = $2';
     const values = [newWordsCount, email];
     await pool.query(query, values);
