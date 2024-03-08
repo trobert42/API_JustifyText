@@ -1,5 +1,7 @@
 import express, { Response, Request } from 'express';
-import { HttpError } from './interfaces';
+export interface HttpError extends Error {
+  statusCode?: number;
+}
 
 const app = express();
 const hostname = process.env.HOST || 'localhost';

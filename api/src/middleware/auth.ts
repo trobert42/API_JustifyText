@@ -1,10 +1,8 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
+import { AuthenticatedRequest } from '../controllers/userController';
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-export interface AuthenticatedRequest extends Request {
-  auth?: string;
-}
 
 module.exports = (
   req: AuthenticatedRequest,
@@ -14,11 +12,10 @@ module.exports = (
   try {
     if (req.headers && req.headers.authorization) {
       const token = req.headers.authorization.split(' ')[1];
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-      const email = decodedToken.email;
-      const foundUser = User.getUserFromEmail(email);
-      req.auth = email;
-      if (!email || !foundUser) throw new Error();
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      const foundUser = User.getUserFromEmail(payload.email);
+      if (!payload.email || !foundUser) throw new Error();
+      req.auth = payload.email;
       next();
     }
   } catch (error) {

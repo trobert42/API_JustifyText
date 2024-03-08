@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
-import { createUser, updateUserWordsCount } from './userController';
+import {
+  AuthenticatedRequest,
+  createUser,
+  updateUserWordsCount,
+} from './userController';
 
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 const max_length_text = 80;
-export interface AuthenticatedRequest extends Request {
-  auth?: string;
-}
 
 export const defaultHandler = (req: Request, res: Response) => {
   return res.status(200).json({ error: `API not found at ${req.url}` });

@@ -1,4 +1,3 @@
-import { count } from 'console';
 import pool from '../db/db';
 
 class User {
