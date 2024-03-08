@@ -6,7 +6,7 @@ const hostname = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT ?? '3000');
 const routes = require('./routes/routes.ts');
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next) => {
   if (req.headers['content-type'] === 'application/json') {
     express.json()(req, res, next);
   } else if (req.headers['content-type'] === 'text/plain') {

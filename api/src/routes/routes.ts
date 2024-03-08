@@ -6,8 +6,9 @@ import {
 } from '../controllers/controller';
 
 const router = express.Router();
+const auth = require('../middleware/auth');
 
-router.post('/api/justify', postTextJustifyHandler);
+router.post('/api/justify', auth, postTextJustifyHandler);
 router.post('/api/token', postTokenHandler);
 router.use(defaultHandler);
 

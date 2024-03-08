@@ -105,10 +105,7 @@ export const postTextJustifyHandler = async (req: Request, res: Response) => {
 };
 
 const generateToken = (email: string) => {
-  const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {
-    expiresIn: '',
-  });
-  console.log(token);
+  const token = jwt.sign({ email: email }, process.env.JWT_SECRET);
   return token;
 };
 
@@ -120,6 +117,9 @@ export const postTokenHandler = (req: Request, res: Response) => {
       .json({ error: `Bad request, missing body or email` });
   }
   const token = generateToken(email);
+  if (!token) {
+    return res.status(500).json({ error: `Unable to retrieve token` });
+  }
   createUser(req, res, token);
   return res.status(200).json({ token: `${token}` });
 };
