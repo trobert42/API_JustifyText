@@ -43,6 +43,8 @@ If you want to run locally this project, you can clone this repo and try yoursel
   ```
 
 # Tools
+<img alt="Docker" src="https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white">
+<img alt="PostgreSQL" src ="https://img.shields.io/badge/PostgreSQL-316192.svg?logo=postgresql&logoColor=white">
 NodeJS | Express | PostgreSQL | JsonWebToken | Docker and docker-compose | Git | Github
 
 # Difficulties
