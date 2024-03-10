@@ -4,6 +4,7 @@ A simple REST API on Node.JS that justifies a text passed as a parameter.
 # Project Description
 This app implements a REST API using Node.JS/Typescript, it consists of two endpoints: /api/token and /api/justify.
 To obtain access to the /api/justify endpoint, a token must be acquired by sending a POST request to /api/token with a JSON body containing the email address. Once authenticated, sending a POST request with text content to /api/justify will return the justified text. The justification algorithm is custom-built.
+Any other routes will give you an 404 Not Found error. 
 
 A daily rate limit of 80,000 words is enforced, and the length of each justified text line is limited to 80 characters.
 
@@ -47,24 +48,23 @@ API_JustifyText/
 
 # Usage 
 To use this API, you can follow these steps:
-1. Obtain a unique Token by sending a POST request to http://16.171.206.86:3000/api/token with a JSON body:
+1. Obtain a unique Token by sending a POST request to `http://16.171.206.86:3000/api/token` with a JSON body:
    ``` bash
    curl --request POST \
     --url 'http://16.171.206.86:3000/api/token/?email=test%40example.com' \
     --header 'Content-Type: application/json' \
-    --data '{
-	    "email":"test@example.com"
-           }'
+    --data '{ "email":"test@example.com" }'
    ```
-2. Make a POST request with the header "Authorization" and with the value "Bearer ${YOUR_TOKEN}" to http://16.171.206.86:3000/api/justify with a plain/text body as Content-Type for getting your text justified. Here's the cURL command:
+2. Make a POST request with the header "Authorization" and with the value "Bearer ${YOUR_TOKEN}" to `http://16.171.206.86:3000/api/justify` with a plain/text body as Content-Type for getting your text justified. Here's the cURL command:
    ``` bash
    curl -X POST \
    -H "Authorization: Bearer YOUR_TOKEN" \
    -H "Content-Type: text/plain" \
-   -d "THE TEXT YOU WANT TO BE JUSTIFIED" \
+   -d "YOU VERY LONG TEXT YOU WANT TO BE JUSTIFIED" \
    http://16.171.206.86:3000/api/justify
    ```
-
+   
+I recommend to use Insomnia for making requests, it's easier, especially for including text content in the request body and to look at the output. It also memorizes the URL and the all the headers values.
 
 # How run locally the project 
 ## Prerequisites
@@ -90,12 +90,14 @@ const lineLenLimit = 80;
 ```
 4. Build and run the containers with docker-compose
   ``` bash
-  docker-compose up --build -d
+  docker-compose up --build -d # "-d" flag stands for "detached" mode, it starts the services in the background
+  docker-compose logs -f # "-f" stands for "follow", it allows you to continuously see and follow the output of the logs from the container
   ```
-
-## How to run tests with Jest
-I did not yet implemented all the tests. Stay tuned, i'll work on it. 
-
+Some helpful commands to stop containers and clean volumes
+``` bash
+ docker-compose -f docker-compose.yml down -v #watch out, it cleans the entire database
+ docker system prune -a -f --volumes
+```
 
 # 💬 Notes
 ## Difficulties
@@ -127,7 +129,7 @@ Every day at midnight, the word count is reset to zero. If you have 10 words lef
 
 
 # Documentation
-If you want to follow how i managed the project throrough the days, here's my [notion's page](https://sparkly-printer-981.notion.site/c7d86bf786e44e2cb2723107e43e54aa?v=9a7da235870644f7a6031717d4ab01ee&pvs=4) about this project
+If you want to follow how i managed the project throrough the days, here's my [notion's page](https://sparkly-printer-981.notion.site/c7d86bf786e44e2cb2723107e43e54aa?v=9a7da235870644f7a6031717d4ab01ee&pvs=4) ⬅️ about this project
 
 ### Nodejs project init 
 - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment
@@ -156,3 +158,7 @@ If you want to follow how i managed the project throrough the days, here's my [n
 ### Jest for Test
 - https://jestjs.io/docs/getting-started
 - https://dev.to/nathan_sheryak/how-to-test-a-typescript-express-api-with-jest-for-dummies-like-me-4epd
+
+# Upcoming Features
+## How to run tests with Jest
+I did not yet implemented all the tests. Stay tuned, i'll work on it.
