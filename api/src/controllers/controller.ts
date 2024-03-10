@@ -36,12 +36,12 @@ export const postTextJustifyHandler = async (
   if (nbrWordsToAdd + nbrActualWords > wordsLimitPerDay) {
     return res.status(402).json({
       error:
-        `Payment required - Exceeds rate limit, number left of words authorized: ` +
+        `Payment required - Exceeded rate limit for today, number left of words authorized: ` +
         (80000 - nbrActualWords),
     });
   }
   await updateUserWordsCount(req, res, nbrWordsToAdd, nbrActualWords);
-  console.log('Successfully justified text from post request!');
+  console.log('Successfully justified text from post request!\n');
   res
     .status(200)
     .setHeader('Content-Type', 'text/plain')

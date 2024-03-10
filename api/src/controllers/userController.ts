@@ -18,7 +18,8 @@ export const createUser = async (
         .status(409)
         .json({ error: `Conflict - Credentials taken for [${existingUser}]` });
     }
-    await User.createUser(email, token);
+    const newUser = await User.createUser(email, token);
+    console.log(`Success creating User [${newUser.email}] at ${Date()}\n`);
     return res.status(200).json({ token: `${token}` });
   } catch (error) {
     return res.status(500).json({
@@ -50,16 +51,14 @@ export const updateUserWordsCount = async (
   try {
     await User.updateWordsCount(req.auth, nbrActualWords + nbrWordsToAdd);
     console.log(
-      `Updating count of words from user [${req.auth}]: ` +
+      `Updating words (+${nbrWordsToAdd}) from user [${req.auth}]: ` +
         (nbrActualWords + nbrWordsToAdd) +
-        '/80,000',
+        `/80,000 at ${Date()}`,
     );
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error:
-          'Internal server - An error occurred while fetching wordsCount in db',
-      });
+    res.status(500).json({
+      error:
+        'Internal server - An error occurred while fetching wordsCount in db',
+    });
   }
 };

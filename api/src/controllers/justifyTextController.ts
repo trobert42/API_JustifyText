@@ -6,7 +6,7 @@ export const setToZeroWordsCount = async () => {
 };
 
 export const countWords = (line: string) => {
-  const wordsTab: string[] = line.split(' ');
+  const wordsTab: string[] = line.split(/\s+/);
   return wordsTab.length;
 };
 
