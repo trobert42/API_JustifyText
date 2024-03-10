@@ -81,10 +81,13 @@ If you want to run locally this project on your computer, you can clone this rep
 I did not yet implemented all the tests. Stay tuned, i'll work on it. 
 
 # Tools
-<img alt="NodeJs" src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white">
-<img alt="ExpressJs" src="https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white">
-<img alt="PostgreSQL" src ="https://img.shields.io/badge/PostgreSQL-316192.svg?logo=postgresql&logoColor=white">
-NodeJS | Express | PostgreSQL | JsonWebToken | Docker and docker-compose | Git | Github
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
 
 # Difficulties
 What was really challenging is for me to apply the right methods to handle the whole project. My formation is based on self-taught so every informations come from forums, videos, articles on the internet. Sometimes, some informations are pretty old or deprecated because tools are updated meanwhile or there are just better ones today. 
