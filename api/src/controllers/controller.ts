@@ -12,9 +12,9 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 export const defaultHandler = (req: Request, res: Response) => {
-  return res
-    .status(404)
-    .json({ error: `API not found at ${req.url} for ${req.method}` });
+  return res.status(404).json({
+    error: `Not Found - API not found at ${req.url} for ${req.method}`,
+  });
 };
 
 export const postTextJustifyHandler = async (
@@ -22,10 +22,12 @@ export const postTextJustifyHandler = async (
   res: Response,
 ) => {
   if (!req.is('text/plain')) {
-    return res.status(400).json({ error: `Content-Type format not allowed` });
+    return res
+      .status(400)
+      .json({ error: `Bad request - Content-Type format not allowed` });
   }
   if (!req.body) {
-    return res.status(400).json({ error: `Empty body` });
+    return res.status(400).json({ error: `Bad request - Empty body` });
   }
   const justifiedText = getJustifiedTextString(req.body);
   const nbrWordsToAdd: number = countWords(justifiedText);
@@ -34,7 +36,7 @@ export const postTextJustifyHandler = async (
   if (nbrWordsToAdd + nbrActualWords > wordsLimitPerDay) {
     return res.status(402).json({
       error:
-        `Exceeds rate limit, number left of words authorized: ` +
+        `Payment required - Exceeds rate limit, number left of words authorized: ` +
         (80000 - nbrActualWords),
     });
   }
@@ -48,22 +50,22 @@ export const postTextJustifyHandler = async (
 
 export const postTokenHandler = (req: Request, res: Response) => {
   if (!req.body) {
-    return res
-      .status(400)
-      .json({ error: `Bad request, missing body or email` });
+    return res.status(400).json({ error: `Bad request - missing body` });
   }
 
   const email = req.body['email'];
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!email || !emailRegex.test(email)) {
-    return res
-      .status(400)
-      .json({ error: `Bad request, missing email or bad email` });
+    return res.status(400).json({
+      error: `Bad request, empty email, wrong email or wrong value for key1`,
+    });
   }
   const token = jwt.sign({ email: email }, process.env.JWT_SECRET);
   if (!token) {
-    return res.status(500).json({ error: `Unable to retrieve token` });
+    return res
+      .status(500)
+      .json({ error: `Internal server - Unable to retrieve token` });
   }
   createUser(req, res, token);
 };

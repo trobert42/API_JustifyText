@@ -27,6 +27,10 @@ module.exports = (
       throw new Error();
     }
   } catch (error) {
-    res.status(401).json({ error: `Wrong Token, no token or user not found` });
+    res
+      .status(401)
+      .json({
+        error: `Unauthorized - Wrong token, no token or user not found`,
+      });
   }
 };

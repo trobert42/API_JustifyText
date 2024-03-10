@@ -16,14 +16,14 @@ export const createUser = async (
     if (existingUser) {
       return res
         .status(409)
-        .json({ error: `Credentials taken for [${existingUser}]` });
+        .json({ error: `Conflict - Credentials taken for [${existingUser}]` });
     }
     await User.createUser(email, token);
     return res.status(200).json({ token: `${token}` });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ error: 'An error occurred while creating the user' });
+    return res.status(500).json({
+      error: 'Internal server - An error occurred while creating the user',
+    });
   }
 };
 
@@ -34,9 +34,10 @@ export const getWordsCountFromUser = async (
   try {
     const words: number = await User.getWords(req.auth);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: 'An error occurred while fetching wordsCount in db' });
+    res.status(500).json({
+      error:
+        'Internal server - An error occurred while fetching wordsCount in db',
+    });
   }
 };
 
@@ -56,6 +57,9 @@ export const updateUserWordsCount = async (
   } catch (error) {
     res
       .status(500)
-      .json({ error: 'An error occurred while fetching wordsCount in db' });
+      .json({
+        error:
+          'Internal server - An error occurred while fetching wordsCount in db',
+      });
   }
 };
