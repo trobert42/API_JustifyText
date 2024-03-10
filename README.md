@@ -24,7 +24,11 @@ To use this API, you can follow these steps:
    http://localhost:3000/api/justify
    ```
 
-# Installation
+# Local installation
+## Prerequisites
+You'll need to have docker-compose, <a ref="https://docs.docker.com/compose/install/">this page</a> resume how to install docker compose 
+
+## Installation
 If you want to run locally this project, you can clone this repo and try yourself:
 1. Clone the repo
   ``` bash
