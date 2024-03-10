@@ -106,13 +106,13 @@ I find the justifyText algorithm very vague. Even on these online websites that 
 An another thing i don’t have are the good practices for the commits and git managing. I dont know when i have to commit or how i should write my message so its professional.
 
 ## What was easier
-For the final project of my web school common core, I focused on authentication and API integration, so this task didn't feel unfamiliar to me. I was already familiar with the Backend/Docker environment, and there's a lot of documentation available.
+For the final project of my web school common core, I focused on authentication and API integration, so this task didn't feel new to me. I was already familiar with the Backend/Docker environment, and there's a lot of documentation available.
 
 I enjoyed working on this small project, although I did spend a bit too much time on the text justification algorithm. Nonetheless, I was able to learn more about AWS and unit testing, which are new technologies to me. 
 
 
 # Documentation
-If you want to follow how i managed the project throrough the days, here's my [notion's page](https://www.notion.so/c7d86bf786e44e2cb2723107e43e54aa?v=9a7da235870644f7a6031717d4ab01ee&pvs=4) about this project
+If you want to follow how i managed the project throrough the days, here's my [notion's page](https://sparkly-printer-981.notion.site/c7d86bf786e44e2cb2723107e43e54aa?v=9a7da235870644f7a6031717d4ab01ee&pvs=4) about this project
 
 ### Nodejs project init 
 - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment
