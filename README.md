@@ -35,8 +35,7 @@ API_JustifyText/
     │   ├── models/
     │   ├── routes/
     │   ├── utils/
-    │   ├── server.ts
-    │   └── folder
+    │   └── server.ts
     ├── tests/
     ├── Dockerfile
     ├── package.json
@@ -48,22 +47,22 @@ API_JustifyText/
 
 # Usage 
 To use this API, you can follow these steps:
-1. Obtain a unique Token by sending a POST request to http://[]/api/token with a JSON body:
+1. Obtain a unique Token by sending a POST request to http://16.171.206.86:3000/api/token with a JSON body:
    ``` bash
    curl --request POST \
-    --url 'http://localhost:3000/api/token/?email=test%40example.com' \
+    --url 'http://16.171.206.86:3000/api/token/?email=test%40example.com' \
     --header 'Content-Type: application/json' \
     --data '{
 	    "email":"test@example.com"
            }'
    ```
-2. Make a POST request with the header "Authorization" and with the value "Bearer ${YOUR_TOKEN}" to http://[]/api/justify with a plain/text body as Content-Type for getting your text justified. Here's the cURL command:
+2. Make a POST request with the header "Authorization" and with the value "Bearer ${YOUR_TOKEN}" to http://16.171.206.86:3000/api/justify with a plain/text body as Content-Type for getting your text justified. Here's the cURL command:
    ``` bash
    curl -X POST \
    -H "Authorization: Bearer YOUR_TOKEN" \
    -H "Content-Type: text/plain" \
    -d "THE TEXT YOU WANT TO BE JUSTIFIED" \
-   http://localhost:3000/api/justify
+   http://16.171.206.86:3000/api/justify
    ```
 
 
@@ -84,9 +83,14 @@ If you want to run locally this project on your computer, you can clone this rep
   POSTGRES_PASSWORD='your_pwd'
   JWT_SECRET='your_secret'
   ```
-3. Build and run the containers with docker-compose
+3. Change the variables as you desire
+```
+const wordsLimitPerDay = 80000;
+const lineLenLimit = 80;
+```
+4. Build and run the containers with docker-compose
   ``` bash
-  docker-compose up -d --build
+  docker-compose up --build -d
   ```
 
 ## How to run tests with Jest
@@ -109,6 +113,17 @@ An another thing i don’t have are the good practices for the commits and git m
 For the final project of my web school common core, I focused on authentication and API integration, so this task didn't feel new to me. I was already familiar with the Backend/Docker environment, and there's a lot of documentation available.
 
 I enjoyed working on this small project, although I did spend a bit too much time on the text justification algorithm. Nonetheless, I was able to learn more about AWS and unit testing, which are new technologies to me. 
+
+## Particularities of the projet
+This assessment serves as an exercise, and it is acknowledged that some aspects of the project may lack practical relevance or context.
+
+There is one unique token which is given by the endpoint /api/token. If you lose it, you won't be able to receive it again and you can't use the same email because credentials will be taken.
+
+This token will not expire.
+
+Words are defined by spaces, so "-" or "123" are valids.
+
+Every day at midnight, the word count is reset to zero. If you have 10 words left free, you can't put a request with body more than 10 words long.
 
 
 # Documentation
