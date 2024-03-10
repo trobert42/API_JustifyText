@@ -7,12 +7,13 @@ import {
 
 import { getJustifiedTextString, countWords } from './justifyTextController';
 
+const wordsLimitPerDay = 80000;
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 export const defaultHandler = (req: Request, res: Response) => {
   return res
-    .status(200)
+    .status(404)
     .json({ error: `API not found at ${req.url} for ${req.method}` });
 };
 
@@ -30,7 +31,7 @@ export const postTextJustifyHandler = async (
   const nbrWordsToAdd: number = countWords(justifiedText);
   const nbrActualWords: number = await User.getWordsCount(req.auth);
 
-  if (nbrWordsToAdd + nbrActualWords > 80000) {
+  if (nbrWordsToAdd + nbrActualWords > wordsLimitPerDay) {
     return res.status(402).json({
       error:
         `Exceeds rate limit, number left of words authorized: ` +

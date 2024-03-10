@@ -16,9 +16,9 @@ export const createUser = async (
     if (existingUser) {
       return res
         .status(409)
-        .json({ error: `Credentials [${existingUser}] taken` });
+        .json({ error: `Credentials taken for [${existingUser}]` });
     }
-    const newUser = await User.createUser(email, token);
+    await User.createUser(email, token);
     return res.status(200).json({ token: `${token}` });
   } catch (error) {
     return res

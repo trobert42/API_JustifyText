@@ -13,11 +13,14 @@ module.exports = (
     if (req.headers && req.headers.authorization) {
       if (req.headers.authorization.split(' ')[0] !== 'Bearer')
         throw new Error();
+
       const token = req.headers.authorization.split(' ')[1];
       if (!token) throw new Error();
+
       const payload = jwt.verify(token, process.env.JWT_SECRET);
       const foundUser = User.getUserFromEmail(payload.email);
       if (!payload.email || !foundUser) throw new Error();
+
       req.auth = payload.email;
       next();
     } else {
