@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const lineLenLimit = 90;
+const lineLenLimit = 80;
 
 export const setToZeroWordsCount = async () => {
   await User.updateAllUserWordsCount(0);

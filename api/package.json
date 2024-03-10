@@ -4,18 +4,24 @@
   "description": "A simple rest api that justifies a text",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "npx tsc",
-    "start:dev": "nodemon --exec ts-node ./src/server.ts"
+    "start:dev": "nodemon --exec ts-node ./src/server.ts",
+    "start": "npm run build && node ./dist/server.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.25",
     "@types/pg": "^8.11.2",
     "eslint": "^8.57.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },

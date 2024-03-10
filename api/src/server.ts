@@ -29,3 +29,5 @@ app.use('/', routes);
 app.listen(port, () => {
   console.log(`Server listening at http://${hostname}:${port}/`);
 });
+
+module.exports = app;
