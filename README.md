@@ -64,7 +64,7 @@ To use this API, you can follow these steps:
    http://16.171.206.86:3000/api/justify
    ```
    
-I recommend to use Insomnia for making requests, it's easier, especially for including text content in the request body and to look at the output. It also memorizes the URL and the all the headers values.
+I recommend to use [Insomnia](https://insomnia.rest/) and a generator of text like [lipsum](https://www.lipsum.com/) for making requests, it's easier, especially for including text content in the request body and to look at the output. It also memorizes the URL and the all the headers values.
 
 # How run locally the project 
 ## Prerequisites
