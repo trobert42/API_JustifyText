@@ -8,7 +8,7 @@ require('./utils/cron');
 const app = express();
 const hostname = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT ?? '3000');
-const routes = require('./routes/routes.ts');
+const routes = require('./routes/routes.js');
 
 app.use((req: Request, res: Response, next) => {
   if (req.headers['content-type'] === 'application/json') {
