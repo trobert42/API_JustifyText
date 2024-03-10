@@ -77,11 +77,12 @@ If you want to run locally this project on your computer, you can clone this rep
   docker-compose up -d --build
   ```
 
-# How to run the test
+## How to run the test
 I did not yet implemented all the tests. Stay tuned, i'll work on it. 
 
 # Tools
-<img alt="Docker" src="https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white">
+<img alt="NodeJs" src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white">
+<img alt="ExpressJs" src="https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white">
 <img alt="PostgreSQL" src ="https://img.shields.io/badge/PostgreSQL-316192.svg?logo=postgresql&logoColor=white">
 NodeJS | Express | PostgreSQL | JsonWebToken | Docker and docker-compose | Git | Github
 
