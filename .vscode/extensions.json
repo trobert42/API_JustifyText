@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "firsttris.vscode-jest-runner",
+    "foxundermoon.shell-format",
+    "Prisma.prisma",
+    "stylelint.vscode-stylelint",
+    "esbenp.prettier-vscode"
+  ]
+}
