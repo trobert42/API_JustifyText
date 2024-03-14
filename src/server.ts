@@ -1,7 +1,9 @@
-import express, { Response, Request } from 'express';
-import cron from './utils/cron';
-import { HttpError } from './types/types';
+import type { Response, Request } from 'express';
+import express from 'express';
+
 import { router } from './routes/routes';
+import type { HttpError } from './types/types';
+import cron from './utils/cron';
 import { getEnvs } from './utils/getEnvs';
 
 getEnvs();
@@ -22,16 +24,14 @@ app.use((req: Request, res: Response, next) => {
   }
 });
 
-app.use(
-  (err: HttpError, req: Request, res: Response, next: () => void): void => {
-    res.status(err.statusCode || 500).json({ error: err.message });
-  },
-);
+app.use((err: HttpError, _: Request, res: Response): void => {
+  res.status(err.statusCode || 500).json({ error: err.message });
+});
 
 app.use('/', router);
 
 app.listen(port, () => {
-  console.log(`Server listening at http://${hostname}:${port}/`);
+  console.info(`Server listening at http://${hostname}:${port}/`);
 });
 
 export default app;

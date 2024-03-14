@@ -117,7 +117,10 @@ const generalLint = {
         pathGroupsExcludedImportTypes: ['builtin'],
       },
     ],
-    'no-console': ['warn', { allow: ['warn', 'error', 'time', 'timeEnd'] }],
+    'no-console': [
+      'warn',
+      { allow: ['info', 'warn', 'error', 'time', 'timeEnd'] },
+    ],
     'no-dupe-keys': 'error',
     'no-else-return': 'error',
     'no-empty': ['error', { allowEmptyCatch: true }],
