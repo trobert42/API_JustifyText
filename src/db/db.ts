@@ -1,5 +1,4 @@
-const { Pool, PoolClient } = require('pg');
-import pg from 'pg';
+import { Pool } from 'pg';
 
 /* ONLY FOR LOCAL TEST */
 // const POSTGRES_LOCAL_HOST: string = '172.18.0.2';
@@ -21,21 +20,21 @@ const pool = new Pool({
   port: 5432,
 });
 
-pool.connect((err: Error, client: typeof PoolClient, release: () => void) => {
+pool.connect((err, client, release) => {
   if (err) {
     return console.error('Error acquiring client', err.stack);
   }
   console.log('Connected to PostgreSQL database');
-  client.query(
+  client?.query(
     `
-	  CREATE TABLE IF NOT EXISTS users (
-		  id SERIAL PRIMARY KEY,
-		  email VARCHAR(255) NOT NULL,
-		  token VARCHAR(255) NOT NULL,
-		  words_count INT DEFAULT 0
-	  )
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) NOT NULL,
+      token VARCHAR(255) NOT NULL,
+      words_count INT DEFAULT 0
+    )
   `,
-    (err: Error, result: pg.QueryResult<any>) => {
+    (err) => {
       release();
       if (err) {
         return console.error('Error executing query', err.stack);

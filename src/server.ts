@@ -1,14 +1,16 @@
 import express, { Response, Request } from 'express';
-export interface HttpError extends Error {
-  statusCode?: number;
-}
+import cron from './utils/cron';
+import { HttpError } from './types/types';
+import { router } from './routes/routes';
+import { getEnvs } from './utils/getEnvs';
 
-require('./utils/cron');
+getEnvs();
+
+cron();
 
 const app = express();
 const hostname = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT ?? '3000');
-const routes = require('./routes/routes.js');
 
 app.use((req: Request, res: Response, next) => {
   if (req.headers['content-type'] === 'application/json') {
@@ -20,14 +22,16 @@ app.use((req: Request, res: Response, next) => {
   }
 });
 
-app.use((err: HttpError, req: Request, res: Response, next: () => void) => {
-  res.status(err.statusCode || 500).json({ error: err.message });
-});
+app.use(
+  (err: HttpError, req: Request, res: Response, next: () => void): void => {
+    res.status(err.statusCode || 500).json({ error: err.message });
+  },
+);
 
-app.use('/', routes);
+app.use('/', router);
 
 app.listen(port, () => {
   console.log(`Server listening at http://${hostname}:${port}/`);
 });
 
-module.exports = app;
+export default app;

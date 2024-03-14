@@ -1,4 +1,5 @@
-const User = require('../models/user');
+import User from '../models/user';
+
 const lineLenLimit = 80;
 
 export const setToZeroWordsCount = async () => {
@@ -11,10 +12,10 @@ export const countWords = (line: string) => {
 };
 
 export const arrangeLinesByLength = (oldTable: string[]) => {
-  let newTab: string[] = [];
+  const newTab: string[] = [];
 
   for (let j = 0; j < oldTable.length; j++) {
-    let wordsTab: string[] = oldTable[j].split(' ');
+    const wordsTab: string[] = oldTable[j].split(' ');
     let newLine: string = '';
     let word: string = '';
     let countCharacters: number = 0;
@@ -40,7 +41,7 @@ export const justifyLines = (lineTab: string[]) => {
   let justifiedText: string = '';
 
   lineTab.forEach((line, index) => {
-    if (index !== 0) justifiedText += '\n';
+    if (index !== 0) {justifiedText += '\n';}
 
     const wordsTab: string[] = line.split(/(\s+)/);
     const nbrWords = wordsTab.length;
@@ -48,7 +49,7 @@ export const justifyLines = (lineTab: string[]) => {
     let i = 0;
 
     while (missingChar > 0 && nbrWords > 1) {
-      if (i === nbrWords - 1) i = 0;
+      if (i === nbrWords - 1) {i = 0;}
       wordsTab[i] += ' ';
       missingChar--;
       i += 2;
@@ -60,7 +61,7 @@ export const justifyLines = (lineTab: string[]) => {
 };
 
 export const getJustifiedTextString = (text: string) => {
-  if (text.length <= lineLenLimit) return text;
+  if (text.length <= lineLenLimit) {return text;}
   const lineSplitedTab: string[] = text.split('\n');
   return justifyLines(arrangeLinesByLength(lineSplitedTab));
 };
