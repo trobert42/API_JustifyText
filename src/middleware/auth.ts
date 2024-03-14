@@ -27,7 +27,7 @@ export default async (req: Request, res: Response, next: () => void) => {
         throw new Error();
       }
 
-      (req as AuthenticatedRequest).auth = payload.email;
+      (req as AuthenticatedRequest).email = payload.email;
       next();
     } else {
       throw new Error();

@@ -4,5 +4,5 @@ export interface HttpError extends Error {
 }
 
 export interface AuthenticatedRequest extends Request {
-  auth: string;
+  email: string;
 }

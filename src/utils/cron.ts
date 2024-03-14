@@ -1,4 +1,4 @@
-import * as cron from 'node-cron';
+import cron from 'node-cron';
 
 import { getAllUsers } from '../db/user';
 import { setToZeroWordsCount } from '../logic/justifyText';

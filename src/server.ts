@@ -7,7 +7,6 @@ import cron from './utils/cron';
 import { getEnvs } from './utils/getEnvs';
 
 getEnvs();
-
 cron();
 
 const app = express();
